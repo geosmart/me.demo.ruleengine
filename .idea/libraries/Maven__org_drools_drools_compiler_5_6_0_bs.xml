@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.drools:drools-compiler:5.6.0.bs">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/drools/drools-compiler/5.6.0.bs/drools-compiler-5.6.0.bs.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/drools/drools-compiler/5.6.0.bs/drools-compiler-5.6.0.bs-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/drools/drools-compiler/5.6.0.bs/drools-compiler-5.6.0.bs-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
