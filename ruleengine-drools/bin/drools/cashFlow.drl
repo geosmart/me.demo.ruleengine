@@ -1,0 +1,38 @@
+package me.demo.service.drl;
+import me.demo.drools.domain.CashFlow;
+import me.demo.drools.domain.CashFlow.Account;
+import me.demo.drools.domain.CashFlow.AccountPeriod;
+import me.demo.drools.util.DroolsUtil
+import me.demo.ruleengine.drools.util.DroolsUtil;
+
+dialect  "mvel"
+
+rule "CREDIT"
+    when
+        $ap:AccountPeriod()
+        $acc:Account($accountNo:accountNo)
+        CashFlow(type=="CREDIT",
+                   accountNo==$accountNo,
+                   date>=$ap.start && <=$ap.end,
+                   $amount:amount)
+    then
+        DroolsUtil.helper(drools);
+        $acc.setBlance($acc.getBlance()+$amount);
+        System.out.println($accountNo+"借入"+$amount);
+ end
+
+ rule "DEBITS"
+ when
+    $ap:AccountPeriod()
+    $acc:Account($accountNo:accountNo)
+    CashFlow(type=="DEBITS",
+        accountNo==$accountNo,
+        date>=$ap.start && <= $ap.end,
+        $amount:amount)
+ then
+    DroolsUtil.helper(drools);
+    $acc.setBlance($acc.getBlance()-$amount);
+    System.out.println($accountNo+"借出"+$amount);
+end
+
+

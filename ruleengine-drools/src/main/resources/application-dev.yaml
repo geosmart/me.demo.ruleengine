@@ -1,0 +1,14 @@
+server:
+    port: 10031
+
+spring:
+    profiles: dev
+    data:
+
+elasticsearch:
+    host: 10.1.6.200
+    port: 9300
+    indexName: cloudx_web_v3
+    typeName: T_EVENT_LOG
+    cluster:
+        name: cloudx_web

@@ -1,0 +1,17 @@
+server:
+    port: 10031
+
+spring:
+    profiles: prod
+    data:
+        mongodb:
+            database: cloudx_web_v3
+            uri: mongodb://localhost:27017
+
+elasticsearch:
+    host: 193.168.201.117
+    port: 9300
+    indexName: cloudx_web_v3
+    typeName: T_EVENT_LOG
+    cluster:
+        name: cloudx_web

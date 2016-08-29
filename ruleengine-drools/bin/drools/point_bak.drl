@@ -1,0 +1,95 @@
+package me.demo.service.drl;
+import me.demo.drools.domain.PointDO;
+import me.demo.drools.domain.Promotion;
+import me.demo.drools.util.DroolsUtil
+import me.demo.ruleengine.drools.util.DroolsUtil;
+
+dialect  "mvel"
+
+//consume more than 10 times
+rule consumeGT10Times
+    salience 11
+    no-loop true
+    lock-on-active true
+    activation-group "issue"
+
+    when
+        $pointDO:PointDO(countOfMonth>10)
+    then
+        DroolsUtil.helper(drools);
+        $pointDO.setPoint($pointDO.getPoint()+88);
+        $pointDO.setIssue(true);
+        modify($pointDO){
+            setUserName("cat"),
+            setIssue(true)
+        }
+end
+
+//new member in 3 months
+rule newMemberIn3Months
+    salience 10
+    no-loop true //对于本规则引起的fact变化(例如调用update，modify等)，只执行一次，但对于其他规则引起的无效
+    activation-group "issue" //一个执行规则组，在同一个组内，只能有一个规则被执行
+    lock-on-active true //no-loop的增强版，其他规则引起的工作内存中的fact变化时，规则也被执行一次
+
+    when
+        $pointDO:PointDO(newMemberIn3Months==true) and $promotion:Promotion(inPromotion==true)
+    then
+        $pointDO.setPoint($pointDO.getConsumeTotal()*2+$promotion.getPoint());
+         //modify修改属性会引起规则重新执行
+        modify($pointDO){
+            setUserName("cat"),
+            setIssue(true)
+        }
+        DroolsUtil.helper(drools);
+end
+
+//new member in 3 months
+rule inPromotion
+    salience 9
+    no-loop true //对于本规则引起的fact变化(例如调用update，modify等)，只执行一次，但对于其他规则引起的无效
+    activation-group "issue" //一个执行规则组，在同一个组内，只能有一个规则被执行
+    lock-on-active true //no-loop的增强版，其他规则引起的工作内存中的fact变化时，规则也被执行一次
+
+    when
+        $pointDO:PointDO(weekend==true) and $promotion:Promotion(inPromotion==true)
+    then
+        DroolsUtil.helper(drools);
+        $pointDO.setPoint($pointDO.getConsumeTotal()*4+$promotion.getPoint());
+         //modify修改属性会引起规则重新执行
+        modify($pointDO){
+            setIssue(true)
+        }
+end
+
+
+rule birthdayMonth
+    salience 8
+    no-loop false
+    lock-on-active true
+    activation-group "issue"
+
+    when
+        $pointDO:PointDO(birthdayMonth==true)
+    then
+        DroolsUtil.helper(drools);
+        $pointDO.setPoint(($pointDO.getConsumeTotal())*3);
+        $pointDO.setIssue(true);
+ end
+
+//consume at weekend
+rule consumeAtweekend
+    salience 7
+    activation-group "issue"
+    lock-on-active true
+
+    when
+        $pointDO:PointDO(weekend==true)
+    then
+        DroolsUtil.helper(drools);
+        $pointDO.setPoint($pointDO.getConsumeTotal()*2);
+        modify($pointDO){
+            setIssue(true)
+        };
+end
+

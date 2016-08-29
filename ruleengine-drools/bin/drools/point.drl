@@ -1,0 +1,38 @@
+package me.demo.service.drl;
+import me.demo.drools.domain.PointDO;
+import me.demo.drools.domain.Promotion;
+import me.demo.drools.util.DroolsUtil
+import me.demo.ruleengine.drools.util.DroolsUtil;
+
+dialect  "mvel"
+
+rule birthdayMonth
+    no-loop true
+
+    when
+        $pointDO:PointDO(birthdayMonth==true,weekend==false)
+    then
+        DroolsUtil.helper(drools);
+        $pointDO.setPoint(($pointDO.getConsumeTotal())*3);
+        //不会引起规则重新执行
+        $pointDO.setIssue(true);
+        //modify修改属性会引起规则重新执行
+        modify($pointDO){
+            setWeekend(true)
+        }
+ end
+
+//consume at weekend
+rule consumeAtBirthdayWeekend
+    no-loop true
+
+    when
+        $pointDO:PointDO(weekend==true)
+    then
+        DroolsUtil.helper(drools);
+        $pointDO.setPoint($pointDO.getConsumeTotal()*2);
+        modify($pointDO){
+            setIssue(true)
+        };
+end
+

@@ -1,0 +1,72 @@
+package me.demo.service.drl;
+import me.demo.drools.domain.FireAlarm;
+import me.demo.drools.domain.FireAlarm.Room;
+import me.demo.drools.domain.FireAlarm.Sprinkler;
+import me.demo.drools.domain.FireAlarm.Fire;
+import me.demo.drools.domain.FireAlarm.Alarm;
+import me.demo.drools.util.DroolsUtil
+import me.demo.ruleengine.drools.util.DroolsUtil;
+
+dialect  "mvel"
+
+rule "when there is a fire turn on the sprinkler"
+    when
+        Fire($room:room)
+        $sprinkler:Sprinkler(room==$room,on==false)
+    then
+        DroolsUtil.helper(drools);
+        modify($sprinkler){
+            setOn(true)
+        }
+        System.out.println("turn on the sprinkler for room" + $room.getName());
+ end
+
+rule "when the fire is gone turn off the sprinkler"
+    when
+        $room:Room()
+        $sprinkler:Sprinkler(room==$room,on==true)
+        not Fire(room==$room)
+    then
+        DroolsUtil.helper(drools);
+        modify($sprinkler){
+            setOn(false)
+        };
+        System.out.println("turn off the sprinkler for room"+ $room.getName());
+end
+
+rule "raise the alarm when we have one or more fires"
+    when
+        exists Fire()
+    then
+        DroolsUtil.helper(drools);
+        insert(new Alarm());
+        System.out.println("raise the alarm");
+end
+
+rule "cancle the alarm when all the fire have gone"
+    when
+        not Fire()
+        $alaram:Alarm()
+    then
+        DroolsUtil.helper(drools);
+        retract($alaram);
+        System.out.println("calcel the alarm");
+end
+
+rule "Show Sprinklers" when
+    $room : Room()
+    $sprinkler : Sprinkler(room==$room)
+then
+    DroolsUtil.helper(drools);
+    System.out.println( "room:" + $room.getName() +
+                        " sprinkler:" + $sprinkler.getRoom().getName() );
+end
+
+rule "status output when things are ok"
+    when
+        not Alarm()
+        not Sprinkler(on==true)
+    then
+        DroolsUtil.helper(drools);
+        System.out.println("everything is ok");
+end
