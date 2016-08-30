@@ -1,8 +1,8 @@
 package me.demo.service.drl;
-import me.demo.drools.domain.CashFlow;
-import me.demo.drools.domain.CashFlow.Account;
-import me.demo.drools.domain.CashFlow.AccountPeriod;
-import me.demo.drools.util.DroolsUtil
+import me.demo.ruleengine.drools.domain.CashFlow;
+import me.demo.ruleengine.drools.domain.CashFlow.Account;
+import me.demo.ruleengine.drools.domain.CashFlow.AccountPeriod;
+import me.demo.ruleengine.drools.util.DroolsUtil
 import me.demo.ruleengine.drools.util.DroolsUtil;
 
 dialect  "mvel"

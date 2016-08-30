@@ -1,0 +1,37 @@
+<!-- 独占类条件(执行顺序交互不影响执行结果) -->
+<!--优先级,数值越小优先级越高，用户设置优先级必须大于0;如果没有设置，系统会随机分配一个优先级;同一个规则集不能出现两个相同优先级的规则-->
+<rule-set name="salaryRule">
+    <mvel-rule id="step1" repeat="false" exclusive="true">
+        <condition><![CDATA[salary<=3500]]></condition>
+        <action><![CDATA[fee=0]]></action>
+    </mvel-rule>
+    <mvel-rule id="step2" repeat="false" exclusive="true">
+        <condition><![CDATA[salary>3500 && salary<=5000]]></condition>
+        <action><![CDATA[fee=(salary-3500)*0.03]]></action>
+    </mvel-rule>
+    <mvel-rule id="step3" repeat="false" exclusive="true">
+        <condition><![CDATA[salary>5000 && salary<=8000]]></condition>
+        <action><![CDATA[fee=(salary-3500)*0.1-105]]></action>
+    </mvel-rule>
+    <mvel-rule id="step4" repeat="false" exclusive="true">
+        <condition><![CDATA[salary>8000 && salary<=12500]]></condition>
+        <action><![CDATA[fee=(salary-3500)*0.2-555]]></action>
+    </mvel-rule>
+    <mvel-rule id="step5" repeat="false" exclusive="true">
+        <condition><![CDATA[salary>12500 && salary<=38500]]></condition>
+        <action><![CDATA[fee=(salary-3500)*0.25-1005]]></action>
+    </mvel-rule>
+    <mvel-rule id="step6" repeat="false" exclusive="true">
+        <condition><![CDATA[salary>38500 && salary<=58500]]></condition>
+        <action><![CDATA[fee=(salary-3500)*0.3-2755]]></action>
+    </mvel-rule>
+    <mvel-rule id="step7" repeat="false" exclusive="true">
+        <condition><![CDATA[salary>58500 && salary<=83500]]></condition>
+        <action><![CDATA[fee=(salary-3500)*0.35-5505]]></action>
+    </mvel-rule>
+    <mvel-rule id="step8" repeat="false" exclusive="true">
+        <condition><![CDATA[salary>83500]]></condition>
+        <action><![CDATA[fee=(salary-3500)*0.45-13505]]></action>
+    </mvel-rule>
+</rule-set>
+

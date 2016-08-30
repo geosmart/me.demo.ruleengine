@@ -1,7 +1,7 @@
 package me.demo.service.drl;
-import me.demo.drools.domain.PointDO;
-import me.demo.drools.domain.Promotion;
-import me.demo.drools.util.DroolsUtil
+import me.demo.ruleengine.drools.domain.PointDO;
+import me.demo.ruleengine.drools.domain.Promotion;
+import me.demo.ruleengine.drools.util.DroolsUtil
 import me.demo.ruleengine.drools.util.DroolsUtil;
 
 dialect  "mvel"

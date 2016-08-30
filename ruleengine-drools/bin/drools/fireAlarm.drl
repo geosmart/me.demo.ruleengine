@@ -1,10 +1,10 @@
 package me.demo.service.drl;
-import me.demo.drools.domain.FireAlarm;
-import me.demo.drools.domain.FireAlarm.Room;
-import me.demo.drools.domain.FireAlarm.Sprinkler;
-import me.demo.drools.domain.FireAlarm.Fire;
-import me.demo.drools.domain.FireAlarm.Alarm;
-import me.demo.drools.util.DroolsUtil
+import me.demo.ruleengine.drools.domain.FireAlarm;
+import me.demo.ruleengine.drools.domain.FireAlarm.Room;
+import me.demo.ruleengine.drools.domain.FireAlarm.Sprinkler;
+import me.demo.ruleengine.drools.domain.FireAlarm.Fire;
+import me.demo.ruleengine.drools.domain.FireAlarm.Alarm;
+import me.demo.ruleengine.drools.util.DroolsUtil
 import me.demo.ruleengine.drools.util.DroolsUtil;
 
 dialect  "mvel"

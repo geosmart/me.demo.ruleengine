@@ -24,14 +24,14 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>1.3.3.RELEASE</spring.boot.version>
-        <javax.inject.version>1</javax.inject.version>
-        <org.mvel>2.2.8.Final</org.mvel>
-        <junit>4.12</junit>
+        <javax.inject.version>1</javax.inject.version> 
+        <junit>4.11</junit>
         <joda.time.version>2.9.3</joda.time.version>
         <apache.common.lang3.version>3.3.2</apache.common.lang3.version>
         <apache.common.io.version>1.3.2</apache.common.io.version>
         <commons.io.version>2.4</commons.io.version>
         <fastjson.version>1.2.4</fastjson.version>
+        <logback.version>1.1.2</logback.version>
     </properties>
 
     <dependencyManagement>
@@ -59,7 +59,19 @@
                 <version>${spring.boot.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}}</version>
+                <scope>test</scope>
+            </dependency>
 
+            <!--log-->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-access</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
             <!--util-->
             <dependency>
                 <groupId>com.alibaba</groupId>
