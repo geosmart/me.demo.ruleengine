@@ -1,138 +1,98 @@
 package me.demo.ruleengine.mvel.test;
 
 import com.alibaba.fastjson.JSON;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
-import me.demo.ruleengine.mvel.executor.MvelRuleExecutor;
-import me.demo.ruleengine.mvel.executor.RuleExecutor;
-import me.demo.ruleengine.mvel.rule.Context;
-import me.demo.ruleengine.mvel.rule.MvelContext;
-import me.demo.ruleengine.mvel.rule.MvelRule;
-import me.demo.ruleengine.mvel.rule.RuleSet;
-import me.demo.ruleengine.mvel.ruleengine.RuleEngine;
-import me.demo.ruleengine.mvel.ruleengine.RuleEngineDefault;
+import me.demo.ruleengine.mvel.MvelRuleExecutor;
+import me.demo.ruleengine.mvel.RuleContext;
+import me.demo.ruleengine.mvel.RuleEngine;
+import me.demo.ruleengine.mvel.RuleEngineDefault;
+import me.demo.ruleengine.mvel.RuleExecutor;
+import me.demo.ruleengine.mvel.RuleSet;
 
 import static org.junit.Assert.assertEquals;
 
 /**
+ * 个人所得税规则测试
  * Created by Think on 2016/8/30.
  */
 public class SalaryRuleTest {
-
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
     RuleEngine ruleEngine = new RuleEngineDefault();
-
-    public static <T> T XML2Bean(InputStream input, Class<T> clazz) {
-        XStream xstream = new XStream(new DomDriver());
-        xstream.processAnnotations(clazz);
-        return (T) xstream.fromXML(input);
-    }
-
-    /**
-     * 获得指定文件的byte数组
-     */
-    public static byte[] getBytes(String filePath) {
-        byte[] buffer = null;
-        try {
-            java.io.File file = new java.io.File(filePath);
-            FileInputStream fis = new FileInputStream(file);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
-            byte[] b = new byte[1000];
-            int n;
-            while ((n = fis.read(b)) != -1) {
-                bos.write(b, 0, n);
-            }
-            fis.close();
-            bos.close();
-            buffer = bos.toByteArray();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return buffer;
-    }
-
-    @Test
-    public void tets_formatRuleJsonData() {
-        RuleSet ruleSet = new RuleSet();
-        MvelRule rule = new MvelRule();
-        rule.setId("step1");
-        rule.setCondition("salary<=3500");
-        rule.setAction("fee=0");
-        ruleSet.getRules().add(rule);
-        String jsonStr = JSON.toJSONString(ruleSet);
-        System.out.println(jsonStr);
-    }
+    String ruleSetName = "salaryRule";
 
     @Before
-    public void setup() throws FileNotFoundException {
-        System.out.println("setup...");
+    public void setup() throws IOException {
+        logger.info("setup...");
 
-        System.out.println("set RuleExecutor");
+        logger.info("loading RuleExecutor ...");
         RuleExecutor ruleExecutor = new MvelRuleExecutor();
-        ruleEngine.addRuleExecutor(ruleExecutor);
+        ruleEngine.registorRuleExecutor(ruleExecutor);
+        logger.info("RuleExecutor loaded");
 
-        System.out.println("set Rules");
         String rulePath = System.getProperty("user.dir") + "\\src\\test\\resources\\salaryRule.json";
-        //TODO rules is null
-        RuleSet ruleSet = JSON.parseObject(getBytes(rulePath), RuleSet.class);
-        ruleEngine.addRules(ruleSet);
+        String jsonStr = FileUtils.readFileToString(new File(rulePath));
+        RuleSet ruleSet = JSON.parseObject(jsonStr, RuleSet.class);
+        ruleEngine.registerRule(ruleSet);
+        logger.info("Rules {} loaded", ruleSetName);
     }
 
     @Test
     public void test_salaryRule() {
-        Context context = new MvelContext();
-        context.put("fee", 0.0);
-        context.put("salary", 1000);
-        ruleEngine.execute(context, "feerule");
+        RuleContext ruleContext = new RuleContext();
+        ruleContext.put("fee", 0.0);
+        ruleContext.put("salary", 1000);
+        ruleEngine.execute(ruleContext, ruleSetName);
 
-        assertEquals(0, context.get("fee"));
+        assertEquals(0, ruleContext.get("fee"));
 
-        context.put("salary", 4000);
-        ruleEngine.execute(context, "feerule");
+        ruleContext.put("salary", 4000);
+        ruleEngine.execute(ruleContext, ruleSetName);
 
-        assertEquals(15.0, context.get("fee"));
+        assertEquals(15.0, ruleContext.get("fee"));
 
-        context.put("salary", 7000);
-        ruleEngine.execute(context, "feerule");
+        ruleContext.put("salary", 7000);
+        ruleEngine.execute(ruleContext, ruleSetName);
 
-        assertEquals(245.0, context.get("fee"));
+        assertEquals(245.0, ruleContext.get("fee"));
 
-        context.put("salary", 21000);
-        ruleEngine.execute(context, "feerule");
+        ruleContext.put("salary", 10000);
+        ruleEngine.execute(ruleContext, ruleSetName);
+        assertEquals(745.0, ruleContext.get("fee"));
 
-        assertEquals(3370.0, context.get("fee"));
+        ruleContext.put("salary", 18000);
+        ruleEngine.execute(ruleContext, ruleSetName);
 
-        context.put("salary", 40005);
-        ruleEngine.execute(context, "feerule");
+        assertEquals(2620.0, ruleContext.get("fee"));
 
-        assertEquals(8196.50, context.get("fee"));
+        ruleContext.put("salary", 40005);
+        ruleEngine.execute(ruleContext, ruleSetName);
 
-        context.put("salary", 70005);
-        ruleEngine.execute(context, "feerule");
+        assertEquals(8196.50, ruleContext.get("fee"));
 
-        assertEquals(17771.75, context.get("fee"));
+        ruleContext.put("salary", 70005);
+        ruleEngine.execute(ruleContext, ruleSetName);
 
-        context.put("salary", 100000);
-        ruleEngine.execute(context, "feerule");
+        assertEquals(17771.75, ruleContext.get("fee"));
 
-        assertEquals(29920.00, context.get("fee"));
+        ruleContext.put("salary", 100000);
+        ruleEngine.execute(ruleContext, ruleSetName);
+
+        assertEquals(29920.00, ruleContext.get("fee"));
     }
 
     @After
     public void teardown() {
-        System.out.println("tear down...");
+        logger.info("teardown...");
     }
 
 }
