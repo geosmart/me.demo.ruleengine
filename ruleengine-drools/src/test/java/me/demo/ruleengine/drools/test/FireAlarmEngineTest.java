@@ -1,5 +1,5 @@
 package me.demo.ruleengine.drools.test; /**
- * Created by Think on 2016/7/25.
+ * Created by geosmart on 2016/7/25.
  */
 
 import org.drools.runtime.rule.FactHandle;

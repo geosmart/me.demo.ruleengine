@@ -2,84 +2,50 @@
   "name": "salaryRule",
   "rules": [
     {
-      "id": "step1",
+      "name": "step1",
       "action": "fee=0",
-      "condition": "salary<=3500",
-      "exclusive": false,
-      "priority": 1,
-      "repeat": false,
-      "type": "mvel",
-      "validate": true
+      "condition": "salary<=3500"
     },
     {
-      "id": "step2",
+      "name": "step2",
       "action": "fee=(salary-3500)*0.03",
-      "condition": "salary>3500 && salary<=5000",
-      "exclusive": false,
-      "priority": 2,
-      "repeat": false,
-      "type": "mvel",
-      "validate": true
+      "condition": "salary>3500 && salary<=5000"
     },
     {
-      "id": "step3",
+      "name": "step3",
       "action": "fee=(salary-3500)*0.1-105",
       "condition": "salary>5000 && salary<=8000",
-      "exclusive": false,
-      "priority": 3,
-      "repeat": false,
-      "type": "mvel",
-      "validate": true
+      "priority": 3
     },
     {
-      "id": "step4",
+      "name": "step4",
       "action": "fee=(salary-3500)*0.2-555",
       "condition": "salary>8000 && salary<=12500",
-      "exclusive": false,
-      "priority": 4,
-      "repeat": false,
-      "type": "mvel",
-      "validate": true
+      "priority": 4
     },
     {
-      "id": "step5",
+      "name": "step5",
       "action": "fee=(salary-3500)*0.25-1005",
       "condition": "salary>12500 && salary<=38500",
-      "exclusive": false,
-      "priority": 5,
-      "repeat": false,
-      "type": "mvel",
-      "validate": true
+      "priority": 5
     },
     {
-      "id": "step6",
+      "name": "a",
       "action": "fee=(salary-3500)*0.3-2755",
       "condition": "salary>38500 && salary<=58500",
-      "exclusive": false,
-      "priority": 6,
-      "repeat": false,
-      "type": "mvel",
-      "validate": true
+      "priority": 6
     },
     {
-      "id": "step7",
+      "name": "step7",
       "action": "fee=(salary-3500)*0.35-5505",
       "condition": "salary>58500 && salary<=83500",
-      "exclusive": false,
-      "priority": 7,
-      "repeat": false,
-      "type": "mvel",
-      "validate": true
+      "priority": 7
     },
     {
-      "id": "step8",
+      "name": "step8",
       "action": "fee=(salary-3500)*0.45-13505",
       "condition": "salary>83500",
-      "exclusive": false,
-      "priority": 8,
-      "repeat": false,
-      "type": "mvel",
-      "validate": true
+      "priority": 8
     }
   ]
 }
