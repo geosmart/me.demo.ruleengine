@@ -12,9 +12,9 @@ import me.demo.ruleengine.mvel.util.Utils;
  *
  * Created by Think on 2016/8/30.
  */
-public class RuleSet {
+public class MvelRuleSet {
     private String name;
-    private TreeSet<BasicRule> rules;
+    private TreeSet<MvelRule> rules;
 
     public String getName() {
         return name;
@@ -27,14 +27,14 @@ public class RuleSet {
         this.name = name;
     }
 
-    public Set<BasicRule> getRules() {
+    public Set<MvelRule> getRules() {
         if (rules == null) {
             rules = new TreeSet<>();
         }
         return rules;
     }
 
-    public void setRules(TreeSet<BasicRule> rules) {
+    public void setRules(TreeSet<MvelRule> rules) {
         this.rules = rules;
     }
 }

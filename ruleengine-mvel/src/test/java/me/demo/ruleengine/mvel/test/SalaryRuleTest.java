@@ -16,7 +16,7 @@ import me.demo.ruleengine.mvel.core.RuleContext;
 import me.demo.ruleengine.mvel.core.RuleEngine;
 import me.demo.ruleengine.mvel.core.DefaultRuleEngine;
 import me.demo.ruleengine.mvel.core.RuleEngineParameter;
-import me.demo.ruleengine.mvel.core.RuleSet;
+import me.demo.ruleengine.mvel.core.MvelRuleSet;
 import me.demo.ruleengine.mvel.util.Utils;
 
 import static org.junit.Assert.assertEquals;
@@ -39,7 +39,7 @@ public class SalaryRuleTest {
 
         String rulePath = System.getProperty("user.dir") + "\\src\\test\\resources\\salaryRule.json";
         String jsonStr = FileUtils.readFileToString(new File(rulePath));
-        RuleSet ruleSet = JSON.parseObject(jsonStr, RuleSet.class);
+        MvelRuleSet ruleSet = JSON.parseObject(jsonStr, MvelRuleSet.class);
         ruleEngine.registerRule(ruleSet);
     }
 

@@ -24,7 +24,7 @@ public interface RuleEngine {
     /**
      * 注册ruleSet
      */
-    void registerRule(RuleSet ruleSet);
+    void registerRule(MvelRuleSet ruleSet);
 
     /**
      * 取消注册rule

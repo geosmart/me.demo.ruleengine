@@ -4,7 +4,8 @@
 * Rule以数据库（如MongoDB）进行存储；
 * Rule支持优先级，支持排他Rule； 
 
-
+# 类图
+![ruleengine类图](diagram.png)
 # 规则文件
 ``` json
 {
@@ -75,7 +76,7 @@ public class SalaryRuleTest {
         logger.info("setup...");
         String rulePath = System.getProperty("user.dir") + "\\src\\test\\resources\\salaryRule.json";
         String jsonStr = FileUtils.readFileToString(new File(rulePath));
-        RuleSet ruleSet = JSON.parseObject(jsonStr, RuleSet.class);
+        MvelRuleSet ruleSet = JSON.parseObject(jsonStr, RuleSet.class);
         ruleEngine.registerRule(ruleSet); 
     }
 

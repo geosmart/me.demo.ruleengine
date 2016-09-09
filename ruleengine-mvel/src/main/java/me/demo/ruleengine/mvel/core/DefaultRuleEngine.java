@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * Created by Think on 2016/8/30.
  */
-public class DefaultRuleEngine implements RuleEngine {
+public class DefaultRuleEngine  implements RuleEngine  {
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
@@ -36,7 +36,7 @@ public class DefaultRuleEngine implements RuleEngine {
     /**
      * ruleSet Map
      */
-    private Map<String, TreeSet<BasicRule>> ruleSetMap = new ConcurrentHashMap<>();
+    private Map<String, TreeSet<Rule>> ruleSetMap = new ConcurrentHashMap<>();
 
     public DefaultRuleEngine(RuleEngineParameter parameters) {
         this.parameters = parameters;
@@ -67,7 +67,7 @@ public class DefaultRuleEngine implements RuleEngine {
     }
 
     @Override
-    public void registerRule(RuleSet ruleSet) {
+    public void registerRule(MvelRuleSet ruleSet) {
         ruleSet.getRules().forEach(rule -> registerRule(rule));
         logRegisteredRules();
     }

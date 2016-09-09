@@ -1,9 +1,5 @@
 package me.demo.ruleengine.mvel.core;
 
-import org.mvel2.MVEL;
-
-import java.io.Serializable;
-
 import me.demo.ruleengine.mvel.util.Utils;
 
 /**
@@ -95,28 +91,15 @@ public class BasicRule implements Rule, Comparable<Rule> {
         return true;
     }
 
-    /**
-     * 判断条件是否匹配
-     */
+    @Override
     public boolean evaluate(RuleContext ruleContext) {
-        try {
-            Boolean isEvaluate = (Boolean) MVEL.eval(getCondition(), ruleContext);
-            return isEvaluate;
-        } catch (Exception e) {
-            throw new RuntimeException(String.format("条件[%s]匹配发生异常:", getCondition()), e);
-        }
+        //default false
+        return false;
     }
 
-    /**
-     * 执行条件匹配后的操作
-     */
+    @Override
     public void execute(RuleContext ruleContext) {
-        try {
-            Serializable exp = MVEL.compileExpression(getAction(), ruleContext);
-            MVEL.executeExpression(exp, ruleContext);
-        } catch (Exception e) {
-            throw new RuntimeException(String.format("后续操作[%s]执行发生异常:", getAction()), e);
-        }
+        //do nothing
     }
 
     @Override
